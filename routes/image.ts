@@ -1,3 +1,5 @@
+import { lookup } from "mrmime";
+
 export default eventHandler(async (event) => {
   const { loadFavicon, resolveFavicon } = useFavicon();
 
@@ -7,7 +9,9 @@ export default eventHandler(async (event) => {
 
   const favicon = await loadFavicon(faviconUrl);
 
-  setResponseHeader(event, "Content-Type", "image/png");
+  const mime = lookup(faviconUrl);
+
+  setResponseHeader(event, "Content-Type", mime as string);
 
   return Buffer.from(favicon);
 });

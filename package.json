@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@meltwater/fetch-favicon": "^1.0.4",
+    "mrmime": "^1.0.1",
     "nitropack": "latest",
     "parse-favicon": "^6.0.1"
   },
