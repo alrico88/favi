@@ -1,9 +1,9 @@
 import { lookup, mimes } from "mrmime";
 import { withQuery } from "ufo";
-import { Unit, convertToMilliseconds } from "espera";
 
 export default eventHandler(async (event) => {
   const { loadFavicon, resolveFavicon } = useFavicon();
+  const { cacheHeaders } = useCache();
 
   const { url } = getQuery(event);
   try {
@@ -17,7 +17,7 @@ export default eventHandler(async (event) => {
 
     setResponseHeaders(event, {
       "Content-Type": mime as string,
-      "Cache-Control": `max-age=${convertToMilliseconds(1, Unit.days)}`,
+      ...cacheHeaders,
     });
 
     return Buffer.from(favicon);
