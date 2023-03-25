@@ -1808,6 +1808,11 @@ eslint-visitor-keys@^3.3.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.3.0.tgz#f6480fa6b1f30efe2d1968aa8ac745b862469826"
   integrity sha512-mQ+suqKJVyeuwGYHAdjMFqjCyfl8+Ldnxuyp3ldiMBFKkvytrXUZWaiPCEav8qDHKty44bD+qV1IP4T+w+xXRA==
 
+espera@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/espera/-/espera-1.0.0.tgz#676368cda5263690c8d24584720be70b70aa0d8d"
+  integrity sha512-Yk+A1mrFM3lPBKxwNEm65swNDrclDduK8za8u/GpTFkawOMyzUX0Vaz/ngFrcSH3yX7ZhxHJAx71T162LhUAGQ==
+
 espree@^9.3.1:
   version "9.5.0"
   resolved "https://registry.yarnpkg.com/espree/-/espree-9.5.0.tgz#3646d4e3f58907464edba852fa047e6a27bdf113"
