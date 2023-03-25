@@ -1,0 +1,22 @@
+{
+  "name": "favi",
+  "author": {
+    "name": "Alberto Rico",
+    "url": "https://alrico.es"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "npx nitropack dev",
+    "build": "npx nitropack build",
+    "preview": "node .output/server/index.mjs"
+  },
+  "dependencies": {
+    "@meltwater/fetch-favicon": "^1.0.4",
+    "nitropack": "latest",
+    "parse-favicon": "^6.0.1"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config-typescript": "^12.0.0",
+    "@types/node": "^18.15.9"
+  }
+}
