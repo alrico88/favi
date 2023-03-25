@@ -4,3 +4,5 @@ node_modules
 .cache
 .output
 .DS_Store
+.output
+.vercel
