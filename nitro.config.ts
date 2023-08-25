@@ -1,5 +1,6 @@
-import { defineNitroConfig } from "nitropack";
-
 export default defineNitroConfig({
   preset: "vercel",
+  experimental: {
+    openAPI: true,
+  },
 });

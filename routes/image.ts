@@ -1,17 +1,17 @@
 import { lookup, mimes } from "mrmime";
 import { withQuery } from "ufo";
 
-export default eventHandler(async (event) => {
+export default defineEventHandler<{query: {url: string}}>(async (event) => {
   const { loadFavicon, resolveFavicon } = useFavicon();
   const { cacheHeaders } = useCache();
 
   const { url } = getQuery(event);
   try {
-    const faviconUrl = await resolveFavicon(url as string);
+    const faviconUrl = await resolveFavicon(url);
 
     const favicon = await loadFavicon(faviconUrl);
 
-    mimes["ico"] = "image/x-icon";
+    mimes.ico = "image/x-icon";
 
     const mime = lookup(faviconUrl);
 
@@ -26,7 +26,7 @@ export default eventHandler(async (event) => {
       event,
       withQuery("/generic", {
         url,
-      })
+      }),
     );
   }
 });

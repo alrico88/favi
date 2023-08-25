@@ -1,7 +1,7 @@
-export default eventHandler(async (event) => {
+export default defineEventHandler<{query: {url: string}}>((event) => {
   const { resolveFavicon } = useFavicon();
 
   const { url } = getQuery(event);
 
-  return resolveFavicon(url as string);
+  return resolveFavicon(url);
 });

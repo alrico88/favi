@@ -14,8 +14,9 @@
     "@meltwater/fetch-favicon": "^1.0.4",
     "espera": "^1.0.0",
     "mrmime": "^1.0.1",
-    "nitropack": "latest",
-    "parse-favicon": "^6.0.1"
+    "nitropack": "^2.6.0",
+    "parse-favicon": "^6.0.1",
+    "ufo": "^1.3.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
