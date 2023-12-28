@@ -1,4 +1,4 @@
-export default defineEventHandler<{query: {url: string}}>((event) => {
+export default defineEventHandler<{ query: { url: string } }>((event) => {
   const { resolveFavicon } = useFavicon();
 
   const { url } = getQuery(event);

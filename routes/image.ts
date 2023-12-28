@@ -1,9 +1,8 @@
 import { lookup, mimes } from "mrmime";
 import { withQuery } from "ufo";
 
-export default defineEventHandler<{query: {url: string}}>(async (event) => {
+export default defineEventHandler<{ query: { url: string } }>(async (event) => {
   const { loadFavicon, resolveFavicon } = useFavicon();
-  const { cacheHeaders } = useCache();
 
   const { url } = getQuery(event);
   try {
@@ -15,10 +14,8 @@ export default defineEventHandler<{query: {url: string}}>(async (event) => {
 
     const mime = lookup(faviconUrl);
 
-    setResponseHeaders(event, {
-      "Content-Type": mime as string,
-      ...cacheHeaders,
-    });
+    setCache(event);
+    setResponseHeader(event, "Content-Type", mime || mimes.png);
 
     return Buffer.from(favicon);
   } catch {
