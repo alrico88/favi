@@ -1,5 +1,66 @@
-import { fetchFavicon } from "@meltwater/fetch-favicon";
-import { parseURL, stringifyParsedURL, resolveURL, $URL } from "ufo";
+import jsdom from "jsdom";
+import { stringifyParsedURL, $URL } from "ufo";
+import is from "@sindresorhus/is";
+
+const { JSDOM } = jsdom;
+
+function processFaviconUrl(originalUrl: string, faviconUrl: string): string {
+  const parsedUrl = new $URL(faviconUrl);
+  Reflect.set(parsedUrl, "search", "");
+  Reflect.set(parsedUrl, "hash", "");
+
+  if (is.falsy(parsedUrl.protocol)) {
+    parsedUrl.protocol = "https:";
+  }
+
+  if (is.falsy(parsedUrl.host)) {
+    parsedUrl.host = new $URL(originalUrl).host;
+  }
+
+  if (parsedUrl.pathname.startsWith(".")) {
+    parsedUrl.pathname = parsedUrl.pathname.replace(/^./, "");
+  }
+
+  if (
+    is.nonEmptyStringAndNotWhitespace(parsedUrl.pathname) &&
+    !parsedUrl.pathname.startsWith("/")
+  ) {
+    parsedUrl.pathname = `/${parsedUrl.pathname}`;
+  }
+
+  return stringifyParsedURL(parsedUrl);
+}
+
+async function fetchFavicon(url: string): Promise<string> {
+  const config = useRuntimeConfig();
+
+  const html = await $fetch<string>(url, {
+    headers: {
+      "User-Agent": config.requestUserAgent,
+    },
+  });
+
+  const { document } = new JSDOM(html).window;
+
+  const rels = [
+    "apple-touch-icon-precomposed",
+    "apple-touch-icon",
+    "shortcut icon",
+    "icon",
+  ];
+
+  for (const rel of rels) {
+    const icon = document.querySelector(`link[rel="${rel}"]`);
+
+    if (icon) {
+      return processFaviconUrl(url, icon.getAttribute("href"));
+    }
+  }
+
+  const parsedUrl = new $URL(url);
+
+  return `${parsedUrl.protocol}//${parsedUrl.host}/favicon.ico`;
+}
 
 export function useFavicon() {
   function getDefaultFavicon(url: string): string {
@@ -8,26 +69,10 @@ export function useFavicon() {
     return `https://ui-avatars.com/api/?name=${parsedUrl.host}`;
   }
 
-  async function resolveFavicon(url: string): Promise<string> {
+  function resolveFavicon(url: string): Promise<string> {
     const parsedOriginalUrl = new $URL(url);
 
-    const faviconUrl = (await fetchFavicon(parsedOriginalUrl.href)) as string;
-
-    // Prevent hash and search params
-    const parsedFaviconUrl = parseURL(faviconUrl);
-    parsedFaviconUrl.search = "";
-    parsedFaviconUrl.hash = "";
-
-    let asStr = stringifyParsedURL(parsedFaviconUrl);
-
-    if (faviconUrl.startsWith("/")) {
-      asStr = resolveURL(
-        `${parsedOriginalUrl.protocol}//${parsedOriginalUrl.host}`,
-        asStr,
-      );
-    }
-
-    return asStr;
+    return fetchFavicon(parsedOriginalUrl.href);
   }
 
   function loadFavicon(url: string): Promise<ArrayBuffer> {
